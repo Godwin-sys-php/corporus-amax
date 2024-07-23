@@ -12,6 +12,7 @@ module.exports = async (req, res) => {
   try {
     console.log("hey");
     const number = req._session.id;
+    req.params.id = req._session.id;
     const items = await Sessions.customQuery(
       "SELECT * FROM sessionItems WHERE sessionId = ?",
       [number]

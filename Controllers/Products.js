@@ -3,6 +3,7 @@ const ProductsCategory = require("../Models/ProductsCategory");
 const Transactions = require("../Models/Transactions");
 const PTCategory = require("../Models/PTCategory");
 const moment = require("moment");
+const MAccount = require("../Models/MAccount");
 
 exports.createOneProduct = async (req, res) => {
   try {
@@ -139,7 +140,8 @@ exports.getAllProducts = async (req, res) => {
 exports.getSellableProducts = async (req, res) => {
   try {
     const products = await Products.find({ isSellable: true });
-    return res.status(200).json({ success: true, data: products, });
+    const accounts = await MAccount.findAll();
+    return res.status(200).json({ success: true, data: products, accounts: accounts, });
   } catch (error) {
     return res.status(500).json({ error: true, message: "Une erreur inconnue a eu lieu"});
   }

@@ -155,6 +155,61 @@ exports.addItem = async (req, res) => {
   }
 };
 
+exports.allInOne = async (req, res, next) => {
+  try {
+    const {items, reduction} = req.body;
+
+    let total = 0;
+    for (let i = 0; i < items.length; i++) {
+      const product = await Products.find({ id: items[i].id });
+      total += product[0].price * items[i].quantity;
+    }
+
+    const now = moment();
+    const toInsert = {
+      clientId: 2,
+      clientName: "AMAX",
+      userId: req.user.id,
+      userName: req.user.name,
+      serverName: req.user.name,
+      total: total,
+      reduction: reduction,
+      isDone: 1,
+      isPaid: 0,
+      invoice: null,
+      timestamp: now.unix(),
+    };
+
+    const inserted = await Sessions.insertOne(toInsert);
+
+    for (let i = 0; i < items.length; i++) {
+      // insert only in session items
+      const toInsert = {
+        userId: req.user.id,
+        userName: req.user.name,
+        sessionId: inserted.insertId,
+        productId: items[i].id,
+        productName: items[i].productName,
+        quantity: Number(items[i].quantity),
+        price: items[i].price,
+        timestamp: now.unix(),
+      };
+      await SessionItems.insertOne(toInsert);
+    }
+
+    const session = await Sessions.find({ id: inserted.insertId });
+
+    req._session = session[0];
+
+    return next();
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: true, message: "Une erreur inconnue a eu lieu" });
+  }
+}
+
 exports.removeItem = async (req, res) => {
   try {
     const now = moment();

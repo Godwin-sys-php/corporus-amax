@@ -14,6 +14,7 @@ const isDone = require("../Middlewares/Exists/isDone");
 const Generator = require("../Controllers/Generator");
 
 router.post("/", authUser, validatorSessions, sessionCtrl.startNewSession);
+router.post("/pos", authUser, sessionCtrl.allInOne, Generator);
 
 router.put("/:id/add-item", authUser, existSession, validatorItems, isNotDone, sessionCtrl.addItem);
 router.put("/:id/remove-item/:idItem", authUser, existSession, existItem, isNotDone, sessionCtrl.removeItem);
