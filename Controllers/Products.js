@@ -54,6 +54,19 @@ exports.createOneProduct = async (req, res) => {
   }
 };
 
+exports.changeBrand = async (req, res) => {
+  try {
+    await Products.update({ brandName: req.body.brand, }, { id: req.params.id, });
+
+    const products = await Products.findAll();
+    const categories = await ProductsCategory.findAll();
+  
+    return res.status(200).json({ success: true, message: "Produit créé", products, categories }); 
+  } catch (error) {
+    return res.status(500).json({ error: true, message: "Une erreur inconnue a eu lieu" }); 
+  }
+}
+
 exports.updateOneProduct = async (req, res) => {
   try {
     let toSet = {

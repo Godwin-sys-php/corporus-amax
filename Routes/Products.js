@@ -13,6 +13,8 @@ router.post("/create", authAdmin, validatorProducts, productsCtrl.createOneProdu
 
 router.put("/update/:id", authAdmin, existProduct, validatorProductsUpdate, productsCtrl.updateOneProduct);
 
+router.put("/brand/:id", existProduct, productsCtrl.changeBrand);
+
 router.get("/get", authUser, productsCtrl.getAllProducts);
 router.get("/get/sellable", authUser, productsCtrl.getSellableProducts);
 router.get("/get/versatile", authUser, productsCtrl.getVersatile);
