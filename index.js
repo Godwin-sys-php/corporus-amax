@@ -46,6 +46,7 @@ app.use(
 
 app.use('/api/users', require('./Routes/Users'))
 app.use('/api/clients', require('./Routes/Clients'))
+app.use('/api/brands', require('./Routes/Brands'))
 app.use('/api/products-category', require('./Routes/ProductsCategory'))
 app.use('/api/products', require('./Routes/Products'))
 app.use('/api/pt-category', require('./Routes/PTCategory'))

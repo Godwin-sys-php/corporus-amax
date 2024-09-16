@@ -4,12 +4,16 @@ const Transactions = require("../Models/Transactions");
 const PTCategory = require("../Models/PTCategory");
 const moment = require("moment");
 const MAccount = require("../Models/MAccount");
+const Brands = require("../Models/Brands");
 
 exports.createOneProduct = async (req, res) => {
   try {
   const toInsert = {
     categoryId: req._pCategory.id,
+    brandId: req._brand.id,
     categoryName: req._pCategory.name,
+    brandName: req._brand.name,
+    barcode: req.body.barcode,
     name: req.body.name,
     unit: req.body.unit,
     isSellable: req.body.isSellable,
@@ -71,7 +75,10 @@ exports.updateOneProduct = async (req, res) => {
   try {
     let toSet = {
       categoryId: req._pCategory.id,
+      brandId: req._brand.id,
       categoryName: req._pCategory.name,
+      brandName: req._brand.name,
+      barcode: req.body.barcode,
       name: req.body.name,
       unit: req.body.unit,
       isSellable: req.body.isSellable,
@@ -144,7 +151,8 @@ exports.getAllProducts = async (req, res) => {
   try {
     const products = await Products.findAll();
     const categories = await ProductsCategory.findAll();
-    return res.status(200).json({ success: true, data: products, categories, });
+    const brands = await Brands.findAll();
+    return res.status(200).json({ success: true, data: products, categories, brands });
   } catch (error) {
     return res.status(500).json({ error: true, message: "Une erreur inconnue a eu lieu"});
   }
