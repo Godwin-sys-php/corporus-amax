@@ -14,6 +14,7 @@ exports.createOneClient = async (req, res) => {
     const toInsert = {
       name: req.body.name,
       cardId: req.body.cardId,
+      points: 0,
       timestamp: now.unix(),
     };
     
