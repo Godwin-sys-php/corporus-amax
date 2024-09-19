@@ -165,8 +165,31 @@ exports.allInOne = async (req, res, next) => {
       total += product[0].price * items[i].quantity;
     }
 
+
+    if (req.body.clientId) {
+      const pointsMade = Math.floor(total / 10);
+      const pointsToPut = req.body.usedPoints ?  req.body.reduction - pointsMade : pointsMade;
+      await Clients.update({ points: pointsToPut }, { id: req.body.clientId });
+      const client = await Clients.find({ id: req.body.clientId });
+      req._client = client[0];
+    }
+
+
+
     const now = moment();
-    const toInsert = {
+    const toInsert = req.body.clientId ? {
+      clientId: req._client.id,
+      clientName: req._client.name,
+      userId: req.user.id,
+      userName: req.user.name,
+      serverName: req.user.name,
+      total: total,
+      reduction: reduction,
+      isDone: 1,
+      isPaid: 0,
+      invoice: null,
+      timestamp: now.unix(),
+    } : {
       clientId: 2,
       clientName: "AMAX",
       userId: req.user.id,

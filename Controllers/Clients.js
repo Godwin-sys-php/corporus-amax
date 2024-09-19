@@ -13,6 +13,7 @@ exports.createOneClient = async (req, res) => {
     const now = moment();
     const toInsert = {
       name: req.body.name,
+      cardId: req.body.cardId,
       timestamp: now.unix(),
     };
     
@@ -32,6 +33,7 @@ exports.updateOneClient = async (req, res) => {
     }
     const toSet = {
       name: req.body.name,
+      cardId: req.body.cardId,
     }
     await Clients.update(toSet, { id: req.params.id });
     const clients = await Clients.findAll();
