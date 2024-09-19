@@ -167,7 +167,7 @@ exports.allInOne = async (req, res, next) => {
 
 
     if (req.body.clientId) {
-      const pointsMade = Math.floor(total / 10);
+      const pointsMade = Math.floor(total / 20);
       const pointsToPut = req.body.usedPoints ?  req.body.reduction - pointsMade : pointsMade;
       await Clients.update({ points: pointsToPut }, { id: req.body.clientId });
       const client = await Clients.find({ id: req.body.clientId });
